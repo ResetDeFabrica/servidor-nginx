@@ -19,14 +19,24 @@ Vagrant.configure("2") do |config|
     # Configurar permisos
     chown -R www-data:www-data /var/www/resetdefabrica/html
     chmod -R 755 /var/www/resetdefabrica
+
+    # Crear directorio para la tarea 5 de mi sitio web personal
+    mkdir -p /var/www/miwebpersonal/html
+    chown -R vagrant:www-data /var/www/miwebpersonal/html 
+    chmod -R 755 /var/www/miwebpersonal/html
+
     # Copiar archivo de configuración de Nginx desde la máquina anfitriona a la máquina virtual
     cp -v /vagrant/resetdefabrica /etc/nginx/sites-available/resetdefabrica
+    cp -v /vagrant/config/miwebpersonal /etc/nginx/sites-available/
     ln -s /etc/nginx/sites-available/resetdefabrica /etc/nginx/sites-enabled/
+    ln -s /etc/nginx/sites-available/miwebpersonal /etc/nginx/sites-enabled/
     # Configuración de FTPS
     # Crear carpeta FTP para el usuario "vagrant"
     mkdir -p /home/vagrant/ftp
     chown -R vagrant:vagrant /home/vagrant/ftp
     chmod 755 /home/vagrant/ftp
+    # Añadir contraseña para usuario vagrant
+    echo "vagrant:vagrant" | chpasswd
     # Generar certificados SSL
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.key -out /etc/ssl/certs/vsftpd.crt -subj "/C=ES/ST=State/L=City/O=Organization/OU=Unit/CN=example.com"
     # Configurar vsftpd.con con la configuración nueva
