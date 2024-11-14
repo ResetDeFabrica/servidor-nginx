@@ -123,9 +123,9 @@ miwebpersonal
 server {
     listen 80;
     listen [::]:80;
-    root /var/www/resetdefabrica/html;
+    root /var/www/miwebpersonal/html;
     index index.html index.htm index.nginx-debian.html;
-    server_name resetdefabrica.local;
+    server_name miwebpersonal.local;
     location / {
         try_files $uri $uri/ =404;
     }
@@ -147,7 +147,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsf
 ```
 3. Configuración de vsftpd
 
-Archivo vsftpd_nueva.conf:
+- Archivo vsftpd_nueva.conf:
 
 ```
 listen=YES
@@ -191,7 +191,7 @@ secure_chroot_dir=/var/run/vsftpd/empty
 # Verificación y Pruebas
 
 1. Pruebas Web
-Accede a tu sitio web:
+- Accede a tu sitio web:
 
 http://resetdefabrica.local
 
@@ -200,21 +200,25 @@ http://resetdefabrica.local
 2. Pruebas FTPS
 Conexión mediante FileZilla:
 
-Host: 192.168.33.10
-Puerto: 21
-Usuario: vagrant
-Contraseña: vagrant
+- Host: 192.168.33.10
+- Puerto: 21
+- Usuario: vagrant
+- Contraseña: vagrant
 
 3. Imagenes del proceso
 
+- access.log
 ![capturadepantalla](/imagenes/Comprobacionaccess.log.jpg)
+- error.log
 ![capturadepantalla](/imagenes/Comprobacionerror.log.jpg)
+- cambio de permisos DNS
 ![capturadepantalla](/imagenes/CambiodeDNScorrecto.jpg)
+- certificado desconocido en filezilla
 ![capturadepantalla](/imagenes/Certificadodesconocido.jpg)
-![capturadepantalla](/imagenes/ConexionFTPFilezilla.jpg)
+- conexión con vagrant
 ![capturadepantalla](/imagenes/Conexionvagrant.jpg)
+- conexión exitosa con vagrant
 ![capturadepantalla](/imagenes/Conexionexitosavagrant.jpg)
-
 
 # Cuestiones Finales
 
