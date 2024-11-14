@@ -18,12 +18,12 @@ Vagrant.configure("2") do |config|
     # Configurar permisos
     chown -R www-data:www-data /var/www/resetdefabrica_web/html
     chmod -R 755 /var/www/resetdefabrica_web
-
+    # Copiar archivo de configuración de Nginx desde la máquina anfitriona a la máquina virtual
+    cp -v /vagrant/resetdefabrica_web /etc/nginx/sites-available/resetdefabrica_web
     ln -fs /etc/nginx/sites-available/resetdefabrica_web /etc/nginx/sites-enabled/
     systemctl restart nginx
 
-    # Copiar archivo de configuración de Nginx desde la máquina anfitriona a la máquina virtual
-    cp -v /vagrant/resetdefabrica_web /etc/nginx/sites-available/resetdefabrica_web
+   
 
     # Instalar y configurar vsftpd
     # apt install -y vsftpd openssl
