@@ -24,9 +24,11 @@ Vagrant.configure("2") do |config|
 
     # Configurar vsftpd
     mkdir -p /home/danielgf/ftp
+    cp -v /vagrant/vsftpd_nueva.conf /etc/vsftpd.conf
+    systemctl restart vsftp
 
     # Generar certificados SSL
-    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.key -out /etc/ssl/certs/vsftpd.crt
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.key -out /etc/ssl/certs/vsftpd.crt
 
     SHELL
   end
