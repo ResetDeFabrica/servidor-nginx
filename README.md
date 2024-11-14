@@ -5,7 +5,7 @@ Tierra es master sobre Venus y esta es slave sobre Tierra.
 
 # Instalación servidor web Nginx
 
-![capturadepantalla](/imagenes/Conexion%20a%20la%20pagina%20clonada%20de%20git.jpg)
+![capturadepantalla](/imagenes/Conexionexitosavagrant.jpg)
 
 ### Enlace al repositorio
 
