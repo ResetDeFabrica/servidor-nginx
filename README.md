@@ -133,13 +133,6 @@ server {
 
 ```
 
-
-
-
-
-
-
-
 ![capturadepantalla](capturavagrant.JPG)
 
 # Configuración del Servidor FTPS
