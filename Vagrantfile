@@ -34,8 +34,5 @@ Vagrant.configure("2") do |config|
     # Configurar vsftpd.con con la configuración nueva
     cp -v /vagrant/vsftpd_nueva.conf /etc/vsftpd.conf
     systemctl restart vsftpd
-
-    
-
     SHELL
   end
