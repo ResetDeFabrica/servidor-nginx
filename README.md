@@ -1,11 +1,6 @@
 # Práctica de Instalación y configuración de servidor webNginx
 
-He creado 2 máquinas virtuales llamadas tierra y venus.
-Tierra es master sobre Venus y esta es slave sobre Tierra.
-
-# Instalación servidor web Nginx
-
-![capturadepantalla](/imagenes/Conexionexitosavagrant.jpg)
+Todo el trabajo realizado y el contenido de la práctica se encuentra aqui.
 
 ### Enlace al repositorio
 
@@ -72,22 +67,166 @@ Vagrant.configure("2") do |config|
 
 ```
 
+# Instalación servidor web Nginx
+
+## Actualizar e instalar nginx
+
+```
+apt-get update
+apt-get install -y nginx
+
+```
+
+## Comprobar el estado de nginx
+
+```
+systemctl status nginx
+
+```
+# Configuarción de Sitios Web
+
+1. Creación de Carpetas
+```
+mkdir -p /var/www/resetdefabrica/html
+mkdir -p /var/www/miwebpersonal/html
+
+```
+2. Configuración de Permisos
+```
+chown -R www-data:www-data /var/www/resetdefabrica/html
+chmod -R 755 /var/www/resetdefabrica
+chown -R vagrant:www-data /var/www/miwebpersonal/html 
+chmod -R 755 /var/www/miwebpersonal
+
+```
+
+3. Configuración de Nginx
+
+Archivo de configuración de Nginx para resetdefabrica y miwebpersonal:
+
+```
+resetdefabrica
+
+server {
+    listen 80;
+    listen [::]:80;
+    root /var/www/resetdefabrica/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name resetdefabrica.local;
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+miwebpersonal
+
+server {
+    listen 80;
+    listen [::]:80;
+    root /var/www/resetdefabrica/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name resetdefabrica.local;
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+```
+
+
+
+
+
+
+
+
 ![capturadepantalla](capturavagrant.JPG)
 
-# Archivos creados
+# Configuración del Servidor FTPS
 
-## vsftpd_nueva.conf
+1. Instalación de vsftpd
+```
+apt-get install -y vsftpd
+```
+2. Configuración de SSL
+```
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.key -out /etc/ssl/certs/vsftpd.crt
+```
+3. Configuración de vsftpd
 
-# Creación de las carpeta del sitio web
+Archivo vsftpd_nueva.conf:
 
-# Configuración de servidor web NGINX
+```
+listen=YES
+listen_port=21
+# listen_ipv6=NO
+anonymous_enable=NO
+local_enable=YES
+dirmessage_enable=YES
+use_localtime=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+secure_chroot_dir=/var/run/vsftpd/empty
+pam_service_name=vsftpd
 
-## Comprobaciones
+rsa_cert_file=/etc/ssl/certs/vsftpd.crt
+rsa_private_key_file=/etc/ssl/private/vsftpd.key
+ssl_enable=YES
+allow_anon_ssl=NO
+force_local_data_ssl=YES
+force_local_logins_ssl=YES
+ssl_tlsv1=YES
+ssl_sslv2=NO
+ssl_sslv3=NO
+require_ssl_reuse=NO
+ssl_ciphers=HIGH
+local_root=/home/vagrant/ftp
 
-# FTP
+implicit_ssl=NO
+write_enable=YES
+local_umask=022
 
-## Configurar servidor FTPS en Debian
+ftpd_banner=Welcome to FTPS Server
+chroot_local_user=YES
+allow_writeable_chroot=YES
+pasv_min_port=10000
+pasv_max_port=10100
+secure_chroot_dir=/var/run/vsftpd/empty
 
-# Tarea
+```
+
+# Verificación y Pruebas
+
+1. Pruebas Web
+Accede a tu sitio web:
+
+http://resetdefabrica.local
+
+![capturadepantalla](/imagenes/Conexionpaginaclonadadegit.jpg)
+
+2. Pruebas FTPS
+Conexión mediante FileZilla:
+
+Host: 192.168.33.10
+Puerto: 21
+Usuario: vagrant
+Contraseña: vagrant
+
+3. Imagenes del proceso
+
+![capturadepantalla](/imagenes/Comprobacionaccess.log.jpg)
+![capturadepantalla](/imagenes/Comprobacionerror.log.jpg)
+![capturadepantalla](/imagenes/CambiodeDNScorrecto.jpg)
+![capturadepantalla](/imagenes/Certificadodesconocido.jpg)
+![capturadepantalla](/imagenes/ConexionFTPFilezilla.jpg)
+![capturadepantalla](/imagenes/Conexionvagrant.jpg)
+![capturadepantalla](/imagenes/Conexionexitosavagrant.jpg)
+
 
 # Cuestiones Finales
+
+## ¿Qué pasa si no hago el link simbólico entre sites-available y sites-enabled de mi sitio web?
+Si no creas el enlace simbólico, Nginx no cargará la configuración del sitio web. Los archivos en sites-available son solo configuraciones disponibles, pero no activas. Nginx solo lee las configuraciones en sites-enabled.
+
+## ¿Qué pasa si no le doy los permisos adecuados a /var/www/nombre_web?
+Si no das los permisos adecuados, Nginx no podrá leer los archivos del sitio web, lo que resultará en un error 403 (Forbidden) cuando intentes acceder al sitio. Es importante que el usuario www-data (el usuario bajo el cual se ejecuta Nginx) tenga permisos de lectura y ejecución en los directorios, y permisos de lectura en los archivos.
