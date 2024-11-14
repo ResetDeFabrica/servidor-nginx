@@ -1,0 +1,10 @@
+server {
+    listen 80;
+    listen [::]:80;
+    root /var/www/resetdefabrica_web/html
+    index index.html index.htm index.nginx-debian.html;
+    server_name resetdefabrica_web;
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
