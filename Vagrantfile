@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
     config.vm.box = "debian/bullseye64"
-    config.vm.network "private_network", ip: "192.168.56.10"
+    config.vm.network "private_network", ip: "192.168.33.10"
     config.vm.provision "shell", inline: <<-SHELL
 
     # Actualizar repositorios e instalar Nginx
@@ -12,15 +12,15 @@ Vagrant.configure("2") do |config|
         systemctl status nginx
 
     # Crear carpetas del sitio web
-    mkdir -p /var/www/resetdefabrica_web/html
-    cd /var/www/resetdefabrica_web/html
+    mkdir -p /var/www/resetdefabrica/html
+    cd /var/www/resetdefabrica/html
     git clone https://github.com/cloudacademy/static-website-example
     # Configurar permisos
-    chown -R www-data:www-data /var/www/resetdefabrica_web/html
-    chmod -R 755 /var/www/resetdefabrica_web
+    chown -R www-data:www-data /var/www/resetdefabrica/html
+    chmod -R 755 /var/www/resetdefabrica/html
     # Copiar archivo de configuración de Nginx desde la máquina anfitriona a la máquina virtual
-    cp -v /vagrant/resetdefabrica_web /etc/nginx/sites-available/resetdefabrica_web
-    ln -fs /etc/nginx/sites-available/resetdefabrica_web /etc/nginx/sites-enabled/
+    cp -v /vagrant/resetdefabrica /etc/nginx/sites-available/resetdefabrica
+    ln -fs /etc/nginx/sites-available/resetdefabrica /etc/nginx/sites-enabled/
     systemctl restart nginx
 
    
