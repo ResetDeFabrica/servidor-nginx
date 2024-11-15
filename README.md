@@ -141,8 +141,6 @@ server {
 
 ```
 
-![capturadepantalla](capturavagrant.JPG)
-
 # Configuración del Servidor FTPS
 
 1. Instalación de vsftpd
