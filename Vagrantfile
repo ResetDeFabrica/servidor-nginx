@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
     git clone https://github.com/ResetDeFabrica/servidor-nginx /var/www/miwebpersonal/html
     # Configurar permisos
     chown -R vagrant:www-data /var/www/miwebpersonal/html 
-    chmod -R 755 /var/www/miwebpersonal
+    chmod -R 755 /var/www/miwebpersonal/html
 
     # Copiar archivo de configuración de Nginx desde la máquina anfitriona a la máquina virtual
     cp -v /vagrant/resetdefabrica /etc/nginx/sites-available/resetdefabrica
@@ -34,10 +34,18 @@ Vagrant.configure("2") do |config|
     ln -s /etc/nginx/sites-available/miwebpersonal /etc/nginx/sites-enabled/
 
     # Configuración de FTPS
-    # Crear carpeta FTP para el usuario "vagrant"
+    # Crear carpeta FTP para el usuario "vagrant" y dentro miwebpersonal
     mkdir -p /home/vagrant/ftp
+    mkdir -p /home/vagrant/ftp/miwebpersonal
+
+    # Dar permisos al usuario vagrant y miwebpersonal
     chown -R vagrant:vagrant /home/vagrant/ftp
     chmod 755 /home/vagrant/ftp
+    chown -R vagrant:vagrant /home/vagrant/ftp/miwebpersonal
+    chmod -R 755 /home/vagrant/ftp/miwebpersonal
+    cp -v /vagrant/index.html /home/vagrant/ftp/miwebpersonal
+
+
 
     # Añadir contraseña para usuario vagrant
     echo "vagrant:vagrant" | chpasswd

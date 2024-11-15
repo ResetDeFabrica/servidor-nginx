@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
     git clone https://github.com/ResetDeFabrica/servidor-nginx /var/www/miwebpersonal/html
     # Configurar permisos
     chown -R vagrant:www-data /var/www/miwebpersonal/html 
-    chmod -R 755 /var/www/miwebpersonal
+    chmod -R 755 /var/www/miwebpersonal/html
 
     # Copiar archivo de configuración de Nginx desde la máquina anfitriona a la máquina virtual
     cp -v /vagrant/resetdefabrica /etc/nginx/sites-available/resetdefabrica
@@ -45,10 +45,18 @@ Vagrant.configure("2") do |config|
     ln -s /etc/nginx/sites-available/miwebpersonal /etc/nginx/sites-enabled/
 
     # Configuración de FTPS
-    # Crear carpeta FTP para el usuario "vagrant"
+    # Crear carpeta FTP para el usuario "vagrant" y dentro miwebpersonal
     mkdir -p /home/vagrant/ftp
+    mkdir -p /home/vagrant/ftp/miwebpersonal
+
+    # Dar permisos al usuario vagrant y miwebpersonal
     chown -R vagrant:vagrant /home/vagrant/ftp
     chmod 755 /home/vagrant/ftp
+    chown -R vagrant:vagrant /home/vagrant/ftp/miwebpersonal
+    chmod -R 755 /home/vagrant/ftp/miwebpersonal
+    cp -v /vagrant/index.html /home/vagrant/ftp/miwebpersonal
+
+
 
     # Añadir contraseña para usuario vagrant
     echo "vagrant:vagrant" | chpasswd
@@ -205,19 +213,40 @@ Conexión mediante FileZilla:
 - Usuario: vagrant
 - Contraseña: vagrant
 
-3. Imagenes del proceso
+3. Miwebpersonal
 
-- access.log
+- He creado un archivo index.html en la carpeta ftp/miwebpersonal
+
+![capturadepantalla](/imagenes/DNS-de-miwebpersonal-en-la-MV.jpg)
+![capturadepantalla](/imagenes/miwebpersonal-index.html.jpg)
+
+**Nota:** El archivo index.html se crea en la carpeta ftp/miwebpersonal, pero no en la carpeta html de miwebpersonal.
+Me ha costado mucho tiempo buscar la solución, no se si está bien pero desde filezilla se pueden ver los archivos y te puedes conectar.
+
+4. Imagenes del proceso
+
+- Access.log
+
 ![capturadepantalla](/imagenes/Comprobacionaccess.log.jpg)
-- error.log
+
+- Error.log
+
 ![capturadepantalla](/imagenes/Comprobacionerror.log.jpg)
-- cambio de permisos DNS
+
+- Cambio de permisos DNS
+
 ![capturadepantalla](/imagenes/CambiodeDNScorrecto.jpg)
-- certificado desconocido en filezilla
+
+- Certificado desconocido en filezilla
+
 ![capturadepantalla](/imagenes/Certificadodesconocido.jpg)
-- conexión con vagrant
+
+- Conexión con vagrant
+
 ![capturadepantalla](/imagenes/Conexionvagrant.jpg)
-- conexión exitosa con vagrant
+
+- Conexión exitosa con vagrant
+
 ![capturadepantalla](/imagenes/Conexionexitosavagrant.jpg)
 
 # Cuestiones Finales
